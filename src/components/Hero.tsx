@@ -1,9 +1,12 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { ChevronDown, Heart } from "lucide-react";
 import PhotoFrame from "./PhotoFrame";
+
+const HERO_PHOTOS = Array.from({ length: 5 }, (_, i) => `/images/hero/photo-${i + 1}.jpg`);
+const SLIDE_DURATION_MS = 6000;
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -15,6 +18,15 @@ export default function Hero() {
   const blur = useTransform(scrollYProgress, [0, 1], [0, 8]);
   const filter = useTransform(blur, (b) => `blur(${b}px)`);
 
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setActiveSlide((i) => (i + 1) % HERO_PHOTOS.length);
+    }, SLIDE_DURATION_MS);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <section
       ref={ref}
@@ -24,11 +36,25 @@ export default function Hero() {
         style={{ scale, filter }}
         className="absolute inset-0"
       >
-        <PhotoFrame
-          src="/images/hero/photo.jpg"
-          alt="A photo of us"
-          className="absolute inset-0 w-full h-full opacity-50"
-        />
+        <AnimatePresence>
+          <motion.div
+            key={activeSlide}
+            initial={{ opacity: 0, scale: 1.08 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{
+              opacity: { duration: 2.2, ease: "easeInOut" },
+              scale: { duration: SLIDE_DURATION_MS / 1000 + 2.2, ease: "linear" },
+            }}
+            className="absolute inset-0"
+          >
+            <PhotoFrame
+              src={HERO_PHOTOS[activeSlide]}
+              alt="A photo of us"
+              className="absolute inset-0 w-full h-full opacity-50"
+            />
+          </motion.div>
+        </AnimatePresence>
         <div className="absolute inset-0 bg-gradient-to-b from-obsidian-0/60 via-obsidian-0/50 to-obsidian-0" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(212,175,55,0.14),_transparent_60%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(212,175,55,0.08),_transparent_55%)]" />
