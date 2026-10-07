@@ -38,9 +38,9 @@ export default function ThailandPassportInteraction({ images }: { images: Chapte
               </div>
               <div className="flex items-end justify-between">
                 <div>
-                  <p className="font-display text-xl sm:text-2xl text-obsidian-0/85">BKK → HKT</p>
+                  <p className="font-display text-xl sm:text-2xl text-obsidian-0/85">DEL → HKT</p>
                   <p className="text-obsidian-0/50 text-[10px] sm:text-xs tracking-wide">
-                    Bangkok to Phuket · Honeymoon Class
+                    Delhi to Phuket · Honeymoon Class
                   </p>
                 </div>
                 <span className="text-obsidian-0/40 text-[10px] uppercase tracking-[0.2em] whitespace-nowrap">
