@@ -29,7 +29,7 @@ export default function BirthdayChapter({ chapter }: { chapter: ChapterType }) {
     <section
       id={chapter.id}
       data-audio-zone={chapter.audioZone}
-      className="relative w-full py-20 md:py-28"
+      className="relative w-full pt-28 pb-20 md:pt-32 md:pb-28"
     >
       <div className="absolute inset-0 bg-gradient-to-b from-obsidian-0 via-obsidian-1 to-obsidian-0 pointer-events-none" />
       <div className="grain absolute inset-0 opacity-40 pointer-events-none" />

@@ -1,7 +1,7 @@
 import Hero from "@/components/Hero";
 import Chapter from "@/components/Chapter";
 import ProgressBar from "@/components/ProgressBar";
-import DynamicAudioManager from "@/components/audio/DynamicAudioManager";
+import Header from "@/components/Header";
 import BirthdayChapter from "@/components/BirthdayChapter";
 import Finale from "@/components/Finale";
 import { journey } from "@/data/journey";
@@ -9,8 +9,8 @@ import { journey } from "@/data/journey";
 export default function Home() {
   return (
     <main className="relative bg-obsidian-0">
+      <Header />
       <ProgressBar />
-      <DynamicAudioManager />
       <Hero />
 
       {journey.map((chapter, i) => {

@@ -2,17 +2,22 @@ export type ChapterImage = {
   src: string;
   alt: string;
   caption?: string;
+  meta?: string;
 };
 
-export type AudioZoneId = "romantic" | "wedding" | "travel" | "emotional";
+export type AudioZoneId = "romantic" | "drive" | "wedding" | "travel" | "emotional";
 
 export type MediaConfig =
-  | { type: "single"; images: ChapterImage[] }
-  | { type: "carousel"; images: ChapterImage[] }
-  | { type: "bento"; images: ChapterImage[] }
+  | { type: "cafeNapkin"; images: ChapterImage[] }
+  | { type: "resortKeycards"; images: ChapterImage[] }
   | { type: "headlights"; images: ChapterImage[] }
+  | { type: "ringBox"; images: ChapterImage[] }
+  | { type: "royalWedding"; images: ChapterImage[] }
   | { type: "dimmer"; images: ChapterImage[] }
-  | { type: "foggyGlass"; images: ChapterImage[] };
+  | { type: "thailandPassport"; images: ChapterImage[] }
+  | { type: "travelPostcards"; images: ChapterImage[] }
+  | { type: "fairyLights"; images: ChapterImage[] }
+  | { type: "feature"; images: ChapterImage[] };
 
 export type Chapter = {
   id: string;
@@ -34,10 +39,10 @@ export const journey: Chapter[] = [
     dateLabel: "Where it began",
     body: [
       "Two coffees, one small table, and conversation that refused to end. Every café became a little warmer the moment you walked in.",
-      "Shy smiles across the table, hands that took their time to finally hold each other — the first chapter, written slowly, on purpose.",
+      "Tap the napkin.",
     ],
     media: {
-      type: "single",
+      type: "cafeNapkin",
       images: [
         {
           src: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1600&auto=format&fit=crop",
@@ -55,10 +60,10 @@ export const journey: Chapter[] = [
     dateLabel: "Samskara · Achrol Niwas · Royal Orchid",
     body: [
       "Before the vows, there were the rehearsals of forever — three escapes where we learned how easily we fit into each other's days.",
-      "Samskara Resort's quiet mornings, the royal stillness of Achrol Niwas, the golden light of Royal Orchid — each one a page in the same story.",
+      "Swipe a keycard to unlock each one.",
     ],
     media: {
-      type: "bento",
+      type: "resortKeycards",
       images: [
         {
           src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop",
@@ -98,7 +103,7 @@ export const journey: Chapter[] = [
         },
       ],
     },
-    audioZone: "romantic",
+    audioZone: "drive",
   },
   {
     id: "the-sagai",
@@ -108,9 +113,10 @@ export const journey: Chapter[] = [
     dateLabel: "The beginning of forever",
     body: [
       "A ring, a room full of the people who love us most, and a promise we'd already been keeping quietly for years, now said out loud.",
+      "Open the box.",
     ],
     media: {
-      type: "single",
+      type: "ringBox",
       images: [
         {
           src: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600&auto=format&fit=crop",
@@ -131,11 +137,22 @@ export const journey: Chapter[] = [
       "Every ritual, every relative, every tear of joy — all of it in service of two people deciding to become one family.",
     ],
     media: {
-      type: "single",
+      type: "royalWedding",
       images: [
         {
-          src: "https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=1600&auto=format&fit=crop",
+          src: "https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=1400&auto=format&fit=crop",
           alt: "Wedding ceremony decor",
+          caption: "The Mandap",
+        },
+        {
+          src: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1400&auto=format&fit=crop",
+          alt: "Wedding fire ritual",
+          caption: "The Pheras",
+        },
+        {
+          src: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=1400&auto=format&fit=crop",
+          alt: "Wedding celebration flowers",
+          caption: "The Celebration",
         },
       ],
     },
@@ -169,10 +186,10 @@ export const journey: Chapter[] = [
     dateLabel: "Turquoise water, endless horizon",
     body: [
       "Our first trip as husband and wife — tropical air, impossibly blue water, and nothing on the agenda except each other.",
-      "We came home sun-kissed, salt-haired, and even more sure that we'd chosen right.",
+      "Stamp the passport.",
     ],
     media: {
-      type: "carousel",
+      type: "thailandPassport",
       images: [
         {
           src: "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?q=80&w=1400&auto=format&fit=crop",
@@ -206,24 +223,28 @@ export const journey: Chapter[] = [
     dateLabel: "Kolkata · Goa · Kundalpur",
     body: [
       "Kolkata's old-world charm, Goa's sunsets that refused to be ordinary, and Kundalpur's quiet, spiritual stillness — we collected places the way other people collect memories, because for us they were the same thing.",
+      "Flip each postcard.",
     ],
     media: {
-      type: "bento",
+      type: "travelPostcards",
       images: [
         {
           src: "https://images.unsplash.com/photo-1558431382-27e303142255?q=80&w=1200&auto=format&fit=crop",
           alt: "Kolkata heritage architecture",
           caption: "Kolkata",
+          meta: "City of Joy",
         },
         {
           src: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f3?q=80&w=1200&auto=format&fit=crop",
           alt: "Goa sunset over the sea",
           caption: "Goa",
+          meta: "Sun & Sand",
         },
         {
           src: "https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=1200&auto=format&fit=crop",
           alt: "Serene temple grounds",
           caption: "Kundalpur",
+          meta: "Quiet & Sacred",
         },
       ],
     },
@@ -237,10 +258,10 @@ export const journey: Chapter[] = [
     dateLabel: "The ordinary days, kept",
     body: [
       "No occasion, no destination — just a lazy Sunday, tangled blankets, and the quiet luxury of doing nothing together.",
-      "These are the memories no camera ever really captures. Wipe the mirror — this one's just for us.",
+      "Pull the cord.",
     ],
     media: {
-      type: "foggyGlass",
+      type: "fairyLights",
       images: [
         {
           src: "https://images.unsplash.com/photo-1489171078254-c3365d6e359f?q=80&w=1600&auto=format&fit=crop",
@@ -260,7 +281,7 @@ export const journey: Chapter[] = [
       "Your birthday, candles and all, was just one bright line in a year full of small, specific joys — inside jokes, silly fights that didn't matter by dinner, and a hundred tiny proofs that we'd built something good.",
     ],
     media: {
-      type: "single",
+      type: "feature",
       images: [
         {
           src: "https://images.unsplash.com/photo-1558636508-e0db3814bd1d?q=80&w=1600&auto=format&fit=crop",
@@ -280,7 +301,7 @@ export const journey: Chapter[] = [
       "Two candles. One wish we don't even need to say out loud, because we're already living it.",
     ],
     media: {
-      type: "single",
+      type: "feature",
       images: [
         {
           src: "https://images.unsplash.com/photo-1602874801006-39634ba6a4f0?q=80&w=1600&auto=format&fit=crop",

@@ -17,6 +17,12 @@ export const audioZones: AudioZoneConfig[] = [
     toneFrequency: "lofi-acoustic",
   },
   {
+    id: "drive",
+    label: "Driving Beats",
+    audioSrc: "/music/drive.mp3",
+    toneFrequency: "drive-beats",
+  },
+  {
     id: "wedding",
     label: "Shehnai & Vows",
     audioSrc: "/music/wedding.mp3",

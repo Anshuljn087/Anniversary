@@ -66,7 +66,31 @@ const PRESETS: Record<string, Preset> = {
       { notes: ["G3", "B3", "D4"], dur: 2.4, gain: 0.05 },
     ],
   },
+  "drive-beats": {
+    timbre: "pluck",
+    tempoMs: 340,
+    steps: [
+      { notes: ["C3"], dur: 0.2, gain: 0.07 },
+      { notes: ["C4"], dur: 0.12, gain: 0.03 },
+      { notes: ["G3"], dur: 0.2, gain: 0.05 },
+      { notes: ["C4"], dur: 0.12, gain: 0.03 },
+      { notes: ["A3"], dur: 0.2, gain: 0.065 },
+      { notes: ["C4"], dur: 0.12, gain: 0.03 },
+      { notes: ["G3"], dur: 0.2, gain: 0.05 },
+      { notes: ["E4"], dur: 0.15, gain: 0.035 },
+    ],
+  },
 };
+
+type OneShotKind =
+  | "chime"
+  | "beep"
+  | "sparkle"
+  | "stamp"
+  | "petals"
+  | "cord"
+  | "flip"
+  | "unlock";
 
 type ZoneRuntime = {
   config: AudioZoneConfig;
@@ -82,6 +106,7 @@ type ZoneRuntime = {
 class DynamicAudioEngine {
   private ctx: AudioContext | null = null;
   private master: GainNode | null = null;
+  private sfxGain: GainNode | null = null;
   private zones = new Map<AudioZoneId, ZoneRuntime>();
   private activeZone: AudioZoneId | null = null;
   private playing = false;
@@ -93,6 +118,10 @@ class DynamicAudioEngine {
       this.master = this.ctx.createGain();
       this.master.gain.value = 0;
       this.master.connect(this.ctx.destination);
+
+      this.sfxGain = this.ctx.createGain();
+      this.sfxGain.gain.value = 0.9;
+      this.sfxGain.connect(this.ctx.destination);
 
       for (const config of audioZones) {
         const gain = this.ctx.createGain();
@@ -211,6 +240,63 @@ class DynamicAudioEngine {
     osc2.start(startTime);
     osc.stop(startTime + dur + 0.1);
     osc2.stop(startTime + dur + 0.1);
+  }
+
+  private thud(out: AudioNode, startTime: number, freq = 90, dur = 0.18, gainAmt = 0.4) {
+    const ctx = this.ctx!;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(freq * 1.8, startTime);
+    osc.frequency.exponentialRampToValueAtTime(freq * 0.6, startTime + dur);
+    gain.gain.setValueAtTime(gainAmt, startTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, startTime + dur);
+    osc.connect(gain);
+    gain.connect(out);
+    osc.start(startTime);
+    osc.stop(startTime + dur + 0.05);
+  }
+
+  async playOneShot(kind: OneShotKind) {
+    const ctx = this.ensureCtx();
+    if (ctx.state === "suspended") await ctx.resume();
+    const out = this.sfxGain!;
+    const t = ctx.currentTime + 0.02;
+
+    switch (kind) {
+      case "chime":
+        this.pluck(out, NOTE_FREQ.C5, t, 0.9, 0.12, "soft");
+        this.pluck(out, NOTE_FREQ.E5, t + 0.1, 0.9, 0.1, "soft");
+        break;
+      case "unlock":
+        this.pluck(out, NOTE_FREQ.G4, t, 0.3, 0.1, "pluck");
+        this.pluck(out, NOTE_FREQ.C5, t + 0.08, 0.5, 0.11, "pluck");
+        break;
+      case "beep":
+        this.pluck(out, NOTE_FREQ.A5, t, 0.08, 0.1, "pluck");
+        this.pluck(out, NOTE_FREQ.A5, t + 0.12, 0.08, 0.1, "pluck");
+        break;
+      case "sparkle": {
+        const notes = ["C5", "E5", "G5", "C5", "A5"] as const;
+        notes.forEach((n, i) => this.pluck(out, NOTE_FREQ[n], t + i * 0.08, 0.5, 0.07, "pluck"));
+        break;
+      }
+      case "stamp":
+        this.thud(out, t, 85, 0.15, 0.5);
+        break;
+      case "petals":
+        this.pluck(out, NOTE_FREQ.A4, t, 0.5, 0.08, "reed");
+        this.pluck(out, NOTE_FREQ.F4, t + 0.18, 0.5, 0.07, "reed");
+        this.pluck(out, NOTE_FREQ.D4, t + 0.36, 0.7, 0.07, "reed");
+        break;
+      case "cord":
+        this.pluck(out, NOTE_FREQ.G4, t, 0.6, 0.09, "soft");
+        break;
+      case "flip":
+        this.pluck(out, NOTE_FREQ.E5, t, 0.18, 0.06, "pluck");
+        this.pluck(out, NOTE_FREQ.C5, t + 0.06, 0.18, 0.05, "pluck");
+        break;
+    }
   }
 
   private scheduleZone(zone: ZoneRuntime) {

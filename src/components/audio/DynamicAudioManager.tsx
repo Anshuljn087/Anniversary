@@ -54,7 +54,7 @@ export default function DynamicAudioManager() {
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.6, duration: 0.8 }}
-      className="glass-panel fixed top-5 right-5 z-50 flex items-center gap-2 rounded-full px-4 py-2.5 text-sm text-ivory/90 cursor-pointer select-none max-w-[70vw]"
+      className="glass-panel flex items-center gap-2 rounded-full px-4 py-2.5 text-sm text-ivory/90 cursor-pointer select-none max-w-[60vw]"
       aria-label={playing ? "Pause music" : "Play music"}
     >
       <span className="relative flex h-2 w-2 shrink-0">
