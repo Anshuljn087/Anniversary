@@ -1,26 +1,126 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --obsidian-0: #05070d;
+  --obsidian-1: #0b0f19;
+  --obsidian-2: #10141f;
+  --champagne: #d4af37;
+  --champagne-soft: #f1d98b;
+  --champagne-dim: rgba(212, 175, 55, 0.35);
+  --ivory: #f6f1e7;
+  --ivory-dim: rgba(246, 241, 231, 0.65);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-obsidian-0: var(--obsidian-0);
+  --color-obsidian-1: var(--obsidian-1);
+  --color-obsidian-2: var(--obsidian-2);
+  --color-champagne: var(--champagne);
+  --color-champagne-soft: var(--champagne-soft);
+  --color-ivory: var(--ivory);
+  --font-serif: var(--font-cormorant);
+  --font-sans: var(--font-manrope);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--obsidian-0);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--obsidian-0);
+  color: var(--ivory);
+  font-family: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1, h2, h3, .font-display {
+  font-family: var(--font-cormorant), serif;
+}
+
+::selection {
+  background: var(--champagne-dim);
+  color: var(--ivory);
+}
+
+/* thin champagne scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--obsidian-0);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--champagne-dim);
+  border-radius: 999px;
+}
+
+.glass-panel {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.text-gradient-gold {
+  background: linear-gradient(90deg, #f1d98b, #d4af37 45%, #f1d98b 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; transform: scaleY(1) translateX(0); }
+  25% { opacity: 0.85; transform: scaleY(0.96) translateX(-0.5px); }
+  50% { opacity: 0.95; transform: scaleY(1.04) translateX(0.5px); }
+  75% { opacity: 0.8; transform: scaleY(0.9) translateX(-0.3px); }
+}
+.animate-flicker {
+  animation: flicker 2.4s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+@keyframes drift-up {
+  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0.6; }
+  100% { transform: translateY(-120px) translateX(var(--drift-x, 10px)) scale(1.8); opacity: 0; }
+}
+.animate-drift {
+  animation: drift-up 3.2s ease-out forwards;
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.animate-shimmer {
+  background-size: 200% auto;
+  animation: shimmer 3.5s linear infinite;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
