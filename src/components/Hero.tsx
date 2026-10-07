@@ -60,7 +60,7 @@ export default function Hero() {
           transition={{ delay: 0.9, duration: 1 }}
           className="mt-6 max-w-md text-ivory-dim text-base sm:text-lg font-light tracking-wide"
         >
-          A love letter in ten chapters, for the woman who made every one of them worth living.
+          A love letter in eleven chapters, for the woman who made every one of them worth living.
         </motion.p>
 
         <motion.div

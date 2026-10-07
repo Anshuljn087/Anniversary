@@ -22,16 +22,16 @@ export default function Dimmer({ image }: { image: ChapterImage }) {
   const warmth = 1 - level;
 
   return (
-    <div className="relative w-full h-full rounded-2xl overflow-hidden glass-panel flex">
+    <div className="relative w-full h-full flex">
       <div className="relative flex-1 overflow-hidden">
         <PhotoFrame
           src={image.src}
           alt={image.alt}
-          className="w-full h-full transition-[filter] duration-150"
+          className="absolute inset-0 w-full h-full transition-[filter] duration-150 pointer-events-none"
           style={{ filter: `brightness(${brightness}) saturate(${1 + warmth * 0.3})` }}
         />
         <div
-          className="absolute inset-0 transition-opacity duration-150"
+          className="absolute inset-0 transition-opacity duration-150 pointer-events-none"
           style={{
             background:
               "radial-gradient(ellipse at 30% 70%, rgba(212,175,55,0.45), transparent 60%)",
@@ -39,11 +39,11 @@ export default function Dimmer({ image }: { image: ChapterImage }) {
           }}
         />
         <div
-          className="absolute inset-0 bg-black transition-opacity duration-150"
+          className="absolute inset-0 bg-black transition-opacity duration-150 pointer-events-none"
           style={{ opacity: (1 - level) * 0.45 }}
         />
 
-        <div className="absolute bottom-6 left-6 right-6">
+        <div className="absolute bottom-6 left-6 right-6 pointer-events-none">
           <p className="font-display italic text-ivory text-lg sm:text-xl leading-snug drop-shadow">
             &ldquo;In the dimmest light, I saw my brightest future.&rdquo;
           </p>

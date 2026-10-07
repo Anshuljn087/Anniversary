@@ -3,8 +3,10 @@
 import { useCallback, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
-import CandleBlow from "./CandleBlow";
+import type { Chapter as ChapterType } from "@/data/journey";
+import CandleCake from "./CandleCake";
 import WaxSeal from "./WaxSeal";
+import { getDynamicAudioEngine } from "@/lib/dynamicAudio";
 
 type Stage = "candles" | "wish" | "letter";
 
@@ -55,7 +57,7 @@ function fireworksLoop(durationMs: number) {
   })();
 }
 
-export default function Finale() {
+export default function Finale({ chapter }: { chapter: ChapterType }) {
   const [stage, setStage] = useState<Stage>("candles");
   const sealBroken = useRef(false);
 
@@ -70,67 +72,107 @@ export default function Finale() {
     sealBroken.current = true;
     goldBurst(0.35);
     setTimeout(() => goldBurst(0.3), 250);
+    // crossfade-swell into the climax zone as the letter opens
+    getDynamicAudioEngine()?.setActiveZone("emotional", true);
   }, []);
 
   return (
-    <div className="relative w-full h-full rounded-2xl overflow-hidden glass-panel flex items-center justify-center">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(212,175,55,0.16),_transparent_65%)]" />
+    <section
+      id={chapter.id}
+      data-audio-zone={chapter.audioZone}
+      className="relative w-full py-20 md:py-28"
+    >
+      <div className="absolute inset-0 bg-gradient-to-b from-obsidian-0 via-obsidian-1 to-obsidian-0 pointer-events-none" />
+      <div className="grain absolute inset-0 opacity-40 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(212,175,55,0.1),_transparent_65%)] pointer-events-none" />
 
-      <AnimatePresence mode="wait">
-        {stage === "candles" && (
-          <motion.div
-            key="candles"
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6 }}
-            className="w-full h-full"
-          >
-            <CandleBlow onBlownOut={handleBlownOut} />
-          </motion.div>
-        )}
-
-        {stage === "wish" && (
-          <motion.div
-            key="wish"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-            className="relative flex flex-col items-center text-center px-6"
-          >
-            <motion.div
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-              className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_rgba(212,175,55,0.3),_transparent_70%)]"
-            />
-            <h3 className="font-display text-gradient-gold text-3xl sm:text-4xl md:text-5xl leading-tight mb-4">
-              Happy 2nd Anniversary,
-              <br />
-              My Love! 🥂
-            </h3>
-            <p className="text-ivory-dim text-base sm:text-lg font-light italic mb-10">
-              To a lifetime of forever.
+      <div className="relative z-10 w-full max-w-2xl mx-auto px-6 flex flex-col items-center text-center gap-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.7 }}
+          className="glass-panel rounded-2xl px-6 py-6 sm:px-8 sm:py-8 w-full"
+        >
+          <p className="text-champagne/80 text-xs sm:text-sm uppercase tracking-[0.3em] font-light mb-3">
+            {chapter.kicker}
+          </p>
+          <h2 className="font-display text-gradient-gold text-4xl sm:text-5xl leading-[1.05] mb-2">
+            {chapter.title}
+          </h2>
+          <p className="text-champagne-soft/70 text-sm sm:text-base font-light italic mb-5">
+            {chapter.dateLabel}
+          </p>
+          {chapter.body.map((p, i) => (
+            <p key={i} className="text-ivory-dim text-base leading-relaxed font-light">
+              {p}
             </p>
-            <button
-              onClick={() => setStage("letter")}
-              className="glass-panel rounded-full px-7 py-3.5 text-sm sm:text-base text-ivory/90 font-light tracking-wide cursor-pointer"
-            >
-              One more thing for you →
-            </button>
-          </motion.div>
-        )}
+          ))}
+        </motion.div>
 
-        {stage === "letter" && (
-          <motion.div
-            key="letter"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="w-full h-full"
-          >
-            <WaxSeal onBreak={handleSealBreak} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="relative w-full h-[58vh] min-h-[420px] rounded-2xl overflow-hidden glass-panel flex items-center justify-center"
+        >
+          <AnimatePresence mode="wait">
+            {stage === "candles" && (
+              <motion.div
+                key="candles"
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6 }}
+                className="w-full h-full"
+              >
+                <CandleCake
+                  candleCount={2}
+                  labels={["Year One", "Year Two"]}
+                  prompt="Make a wish, together."
+                  onBlownOut={handleBlownOut}
+                />
+              </motion.div>
+            )}
+
+            {stage === "wish" && (
+              <motion.div
+                key="wish"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1 }}
+                className="relative flex flex-col items-center text-center px-6"
+              >
+                <h3 className="font-display text-gradient-gold text-3xl sm:text-4xl md:text-5xl leading-tight mb-4">
+                  Happy 2nd Anniversary,
+                  <br />
+                  My Love! 🥂
+                </h3>
+                <p className="text-ivory-dim text-base sm:text-lg font-light italic mb-10">
+                  To a lifetime of forever.
+                </p>
+                <button
+                  onClick={() => setStage("letter")}
+                  className="glass-panel rounded-full px-7 py-3.5 text-sm sm:text-base text-ivory/90 font-light tracking-wide cursor-pointer"
+                >
+                  One more thing for you →
+                </button>
+              </motion.div>
+            )}
+
+            {stage === "letter" && (
+              <motion.div
+                key="letter"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8 }}
+                className="w-full h-full"
+              >
+                <WaxSeal onBreak={handleSealBreak} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+    </section>
   );
 }

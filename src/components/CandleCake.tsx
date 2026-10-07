@@ -6,8 +6,18 @@ import { startBlowDetection, type BlowDetector } from "@/lib/audio";
 
 type Smoke = { id: number; x: number };
 
-export default function CandleBlow({ onBlownOut }: { onBlownOut: () => void }) {
-  const [litCount, setLitCount] = useState(2);
+export default function CandleCake({
+  candleCount = 2,
+  labels,
+  prompt = "Make a wish, together.",
+  onBlownOut,
+}: {
+  candleCount?: number;
+  labels?: string[];
+  prompt?: string;
+  onBlownOut: () => void;
+}) {
+  const [litCount, setLitCount] = useState(candleCount);
   const [holding, setHolding] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
   const [smoke, setSmoke] = useState<Smoke[]>([]);
@@ -21,7 +31,10 @@ export default function CandleBlow({ onBlownOut }: { onBlownOut: () => void }) {
     if (done.current) return;
     done.current = true;
     setLitCount(0);
-    const newSmoke = [0, 1].map(() => ({ id: smokeId.current++, x: -20 + Math.random() * 40 }));
+    const newSmoke = Array.from({ length: candleCount }, () => ({
+      id: smokeId.current++,
+      x: -20 + Math.random() * 40,
+    }));
     setSmoke(newSmoke);
     detectorRef.current?.stop();
     setTimeout(onBlownOut, 1200);
@@ -74,18 +87,17 @@ export default function CandleBlow({ onBlownOut }: { onBlownOut: () => void }) {
   };
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center">
-      {/* candles */}
-      <div className="relative flex items-end gap-10 sm:gap-14 mb-10">
-        {[0, 1].map((i) => (
+    <div className="relative w-full h-full flex flex-col items-center justify-center pointer-events-auto">
+      <div className="relative flex items-end gap-8 sm:gap-10 mb-8">
+        {Array.from({ length: candleCount }).map((_, i) => (
           <div key={i} className="relative flex flex-col items-center">
-            <div className="relative h-20 sm:h-28 flex items-end justify-center">
+            <div className="relative h-16 sm:h-24 flex items-end justify-center">
               <AnimatePresence>
                 {litCount > 0 && (
                   <motion.div
                     exit={{ opacity: 0, scale: 0.3, y: -10 }}
                     transition={{ duration: 0.4 }}
-                    className="absolute bottom-full mb-0.5"
+                    className="absolute bottom-full mb-0.5 pointer-events-none"
                   >
                     <div className="relative">
                       <div
@@ -97,15 +109,19 @@ export default function CandleBlow({ onBlownOut }: { onBlownOut: () => void }) {
                   </motion.div>
                 )}
               </AnimatePresence>
-              <div className="w-5 sm:w-6 h-full rounded-sm bg-gradient-to-b from-ivory via-ivory/90 to-champagne-soft/80 shadow-inner" />
+              <div className="w-4 sm:w-5 h-full rounded-sm bg-gradient-to-b from-ivory via-ivory/90 to-champagne-soft/80 shadow-inner" />
             </div>
-            <span className="mt-3 text-champagne/70 text-xs tracking-[0.2em] uppercase font-light">
-              {i === 0 ? "Year One" : "Year Two"}
-            </span>
+            {labels?.[i] && (
+              <span className="mt-3 text-champagne/70 text-xs tracking-[0.2em] uppercase font-light">
+                {labels[i]}
+              </span>
+            )}
           </div>
         ))}
 
-        {/* smoke after blow out */}
+        {/* cake base */}
+        <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[140%] h-8 rounded-[50%] bg-gradient-to-b from-champagne-soft/40 to-transparent -z-10 pointer-events-none" />
+
         <AnimatePresence>
           {smoke.map((s) => (
             <motion.div
@@ -115,30 +131,33 @@ export default function CandleBlow({ onBlownOut }: { onBlownOut: () => void }) {
               exit={{ opacity: 0 }}
               transition={{ duration: 1.6, ease: "easeOut" }}
               style={{ left: `calc(50% + ${s.x}px)` }}
-              className="absolute bottom-20 w-6 h-6 rounded-full bg-ivory/40 blur-md"
+              className="absolute bottom-16 w-6 h-6 rounded-full bg-ivory/40 blur-md pointer-events-none"
             />
           ))}
         </AnimatePresence>
       </div>
 
-      <p className="font-display text-2xl sm:text-3xl text-ivory mb-8 text-center px-6">
-        Make a wish, together.
+      <p className="font-display text-xl sm:text-2xl text-ivory mb-6 text-center px-6">
+        {prompt}
       </p>
 
       <button
         onPointerDown={startHold}
         onPointerUp={endHold}
         onPointerLeave={endHold}
-        className="glass-panel relative overflow-hidden rounded-full px-7 py-3.5 text-sm sm:text-base text-ivory/90 font-light tracking-wide select-none touch-none"
+        className="glass-panel relative overflow-hidden rounded-full px-6 py-3 text-sm sm:text-base text-ivory/90 font-light tracking-wide select-none touch-none cursor-pointer"
       >
         <span
           className="absolute inset-0 origin-left bg-champagne/30"
-          style={{ transform: `scaleX(${holding ? holdProgress : 0})`, transition: holding ? "none" : "transform 0.2s" }}
+          style={{
+            transform: `scaleX(${holding ? holdProgress : 0})`,
+            transition: holding ? "none" : "transform 0.2s",
+          }}
         />
-        <span className="relative">Hold or Tap to Blow the Candles</span>
+        <span className="relative">Tap or hold to blow the candles</span>
       </button>
 
-      <p className="mt-4 text-ivory/40 text-xs font-light tracking-wide">
+      <p className="mt-3 text-ivory/40 text-xs font-light tracking-wide h-4">
         {micStatus === "listening"
           ? "or just blow into your mic 🕯️"
           : micStatus === "denied"

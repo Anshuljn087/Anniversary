@@ -9,13 +9,13 @@ export default function Headlights({ image }: { image: ChapterImage }) {
   const [on, setOn] = useState(false);
 
   return (
-    <div className="relative w-full h-full rounded-2xl overflow-hidden glass-panel">
-      <PhotoFrame src={image.src} alt={image.alt} className="w-full h-full brightness-[0.35]" />
+    <div className="relative w-full h-full">
+      <PhotoFrame src={image.src} alt={image.alt} className="absolute inset-0 w-full h-full brightness-[0.35] pointer-events-none" />
 
-      {/* dark highway overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/60" />
+      {/* dark highway overlay — decorative, never intercepts input */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/60 pointer-events-none" />
 
-      {/* headlight glow cones */}
+      {/* headlight glow cones — decorative, never intercepts input */}
       <AnimatePresence>
         {on && (
           <motion.div
@@ -23,7 +23,7 @@ export default function Headlights({ image }: { image: ChapterImage }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6 }}
-            className="absolute inset-0"
+            className="absolute inset-0 pointer-events-none"
           >
             <div
               className="absolute left-1/2 top-[55%] -translate-x-1/2 w-[140%] h-[70%]"
@@ -38,7 +38,7 @@ export default function Headlights({ image }: { image: ChapterImage }) {
         )}
       </AnimatePresence>
 
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-3">
         <span className="text-ivory/70 text-xs uppercase tracking-[0.25em] font-light">
           {on ? "High beams on" : "Dark highway, no lights"}
         </span>
