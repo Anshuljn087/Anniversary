@@ -48,11 +48,11 @@ export default function CafeNapkinInteraction() {
           {!unfolded ? (
             <motion.button
               key="folded"
+              type="button"
               onClick={handleTap}
               exit={{ opacity: 0 }}
-              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="relative w-20 h-20 sm:w-24 sm:h-24 cursor-pointer"
+              className="relative w-20 h-20 sm:w-24 sm:h-24 cursor-pointer touch-manipulation"
               aria-label="Unfold the napkin"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-ivory via-ivory/95 to-champagne-soft/70 rounded-sm shadow-xl" />
