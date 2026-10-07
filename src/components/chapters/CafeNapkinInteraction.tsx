@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import type { ChapterImage } from "@/data/journey";
+import PhotoFrame from "../PhotoFrame";
 import { getDynamicAudioEngine } from "@/lib/dynamicAudio";
 
-export default function CafeNapkinInteraction() {
+export default function CafeNapkinInteraction({ image }: { image: ChapterImage }) {
   const [unfolded, setUnfolded] = useState(false);
 
   const handleTap = () => {
@@ -15,10 +17,29 @@ export default function CafeNapkinInteraction() {
 
   return (
     <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_30%,_rgba(212,175,55,0.12),_transparent_60%)] pointer-events-none" />
+      {/* the café photo — hidden until the napkin is unfolded */}
+      <motion.div
+        initial={false}
+        animate={{ opacity: unfolded ? 1 : 0, scale: unfolded ? 1 : 1.06 }}
+        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        className="absolute inset-0"
+      >
+        <PhotoFrame src={image.src} alt={image.alt} className="absolute inset-0 w-full h-full pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/30 pointer-events-none" />
+      </motion.div>
 
-      {/* coffee cup with steam */}
-      <div className="absolute top-[14%] left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none">
+      <motion.div
+        animate={{ opacity: unfolded ? 0 : 1 }}
+        transition={{ duration: 0.6 }}
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_30%,_rgba(212,175,55,0.12),_transparent_60%)] pointer-events-none"
+      />
+
+      {/* coffee cup with steam — fades out once the photo is revealed */}
+      <motion.div
+        animate={{ opacity: unfolded ? 0 : 1, y: unfolded ? -10 : 0 }}
+        transition={{ duration: 0.5 }}
+        className="absolute top-[14%] left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none"
+      >
         <div className="relative flex gap-2 mb-1">
           {[0, 1, 2].map((i) => (
             <motion.span
@@ -40,10 +61,10 @@ export default function CafeNapkinInteraction() {
           <div className="absolute inset-x-1 top-0 h-2 rounded-full bg-[#3b2415]" />
         </div>
         <div className="w-24 h-2 rounded-full bg-black/30 blur-sm mt-1" />
-      </div>
+      </motion.div>
 
       {/* napkin */}
-      <div className="absolute bottom-[14%] left-1/2 -translate-x-1/2">
+      <div className="absolute bottom-[14%] left-1/2 -translate-x-1/2 z-10">
         <AnimatePresence mode="wait">
           {!unfolded ? (
             <motion.button
@@ -86,7 +107,7 @@ export default function CafeNapkinInteraction() {
       </div>
 
       {!unfolded && (
-        <span className="absolute bottom-6 left-1/2 -translate-x-1/2 text-ivory/50 text-xs uppercase tracking-[0.25em] font-light pointer-events-none">
+        <span className="absolute bottom-6 left-1/2 -translate-x-1/2 text-ivory/50 text-xs uppercase tracking-[0.25em] font-light pointer-events-none z-10">
           Tap the napkin
         </span>
       )}

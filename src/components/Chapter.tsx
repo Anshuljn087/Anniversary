@@ -17,13 +17,13 @@ function ChapterMedia({ chapter }: { chapter: ChapterType }) {
 
   switch (media.type) {
     case "cafeNapkin":
-      return <CafeNapkinInteraction />;
+      return <CafeNapkinInteraction image={media.images[0]} />;
     case "resortKeycards":
       return <ResortKeycardsInteraction images={media.images} />;
     case "headlights":
       return <Headlights image={media.images[0]} />;
     case "ringBox":
-      return <RingBoxInteraction />;
+      return <RingBoxInteraction image={media.images[0]} />;
     case "royalWedding":
       return <RoyalWeddingInteraction images={media.images} />;
     case "dimmer":

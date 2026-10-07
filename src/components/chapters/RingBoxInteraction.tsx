@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
+import type { ChapterImage } from "@/data/journey";
+import PhotoFrame from "../PhotoFrame";
 import { getDynamicAudioEngine } from "@/lib/dynamicAudio";
 
-export default function RingBoxInteraction() {
+export default function RingBoxInteraction({ image }: { image: ChapterImage }) {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -26,12 +28,27 @@ export default function RingBoxInteraction() {
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(212,175,55,0.14),_transparent_65%)] pointer-events-none" />
+      {/* the real photo — fades in behind the box once it's opened */}
+      <motion.div
+        initial={false}
+        animate={{ opacity: open ? 1 : 0 }}
+        transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className="absolute inset-0"
+      >
+        <PhotoFrame src={image.src} alt={image.alt} className="absolute inset-0 w-full h-full pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/50 pointer-events-none" />
+      </motion.div>
+
+      <motion.div
+        animate={{ opacity: open ? 0.5 : 1 }}
+        transition={{ duration: 0.8 }}
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(212,175,55,0.14),_transparent_65%)] pointer-events-none"
+      />
 
       <button
         onClick={handleOpen}
         disabled={open}
-        className="relative cursor-pointer disabled:cursor-default"
+        className="relative z-10 cursor-pointer disabled:cursor-default"
         style={{ perspective: 900 }}
         aria-label="Open the ring box"
       >
@@ -77,7 +94,7 @@ export default function RingBoxInteraction() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9, duration: 0.6 }}
-            className="font-display italic text-ivory text-lg sm:text-xl mt-10 text-center px-6"
+            className="relative z-10 font-display italic text-ivory text-lg sm:text-xl mt-10 text-center px-6 drop-shadow"
           >
             The day you said Yes 💍
           </motion.p>
