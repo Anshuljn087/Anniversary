@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronDown, Heart } from "lucide-react";
+import PhotoFrame from "./PhotoFrame";
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -23,6 +24,12 @@ export default function Hero() {
         style={{ scale, filter }}
         className="absolute inset-0"
       >
+        <PhotoFrame
+          src="/images/hero/photo.jpg"
+          alt="A photo of us"
+          className="absolute inset-0 w-full h-full opacity-50"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-obsidian-0/60 via-obsidian-0/50 to-obsidian-0" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(212,175,55,0.14),_transparent_60%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(212,175,55,0.08),_transparent_55%)]" />
         <div className="grain absolute inset-0" />

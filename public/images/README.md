@@ -9,6 +9,7 @@ crops/frames each one to fit, so don't worry about exact dimensions.
 
 | Folder | Filename(s) needed | Used in |
 |---|---|---|
+| `hero/` | `photo.jpg` | Opening screen — background behind the title |
 | `cafe-dates/` | `photo.jpg` | Chapter 1 — café napkin reveal |
 | `pre-wedding-getaways/` | `samskara-resort.jpg`, `achrol-niwas.jpg`, `royal-orchid.jpg` | Chapter 2 — resort keycards |
 | `night-drives/` | `photo.jpg` | Chapter 3 — headlights / night highway |
