@@ -30,6 +30,11 @@ export type Chapter = {
   audioZone: AudioZoneId;
 };
 
+// Every photo below is picked from public/images/<chapter-id>/ — see
+// public/images/README.md for the exact filename each chapter expects.
+// Drop your own photo in with that filename and it replaces the
+// placeholder automatically, no code changes needed.
+
 export const journey: Chapter[] = [
   {
     id: "cafe-dates",
@@ -45,7 +50,7 @@ export const journey: Chapter[] = [
       type: "cafeNapkin",
       images: [
         {
-          src: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1600&auto=format&fit=crop",
+          src: "/images/cafe-dates/photo.jpg",
           alt: "Two coffee cups on a café table",
         },
       ],
@@ -66,17 +71,17 @@ export const journey: Chapter[] = [
       type: "resortKeycards",
       images: [
         {
-          src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop",
+          src: "/images/pre-wedding-getaways/samskara-resort.jpg",
           alt: "Luxury resort pool at golden hour",
           caption: "Samskara Resort",
         },
         {
-          src: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=1200&auto=format&fit=crop",
+          src: "/images/pre-wedding-getaways/achrol-niwas.jpg",
           alt: "Heritage palace courtyard",
           caption: "Achrol Niwas",
         },
         {
-          src: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=1200&auto=format&fit=crop",
+          src: "/images/pre-wedding-getaways/royal-orchid.jpg",
           alt: "Elegant resort villa at dusk",
           caption: "Royal Orchid",
         },
@@ -98,7 +103,7 @@ export const journey: Chapter[] = [
       type: "headlights",
       images: [
         {
-          src: "https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=1600&auto=format&fit=crop",
+          src: "/images/night-drives/photo.jpg",
           alt: "Night highway with light trails",
         },
       ],
@@ -119,7 +124,7 @@ export const journey: Chapter[] = [
       type: "ringBox",
       images: [
         {
-          src: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600&auto=format&fit=crop",
+          src: "/images/the-sagai/photo.jpg",
           alt: "Wedding rings close up",
         },
       ],
@@ -140,17 +145,17 @@ export const journey: Chapter[] = [
       type: "royalWedding",
       images: [
         {
-          src: "https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=1400&auto=format&fit=crop",
+          src: "/images/the-shaadi/the-mandap.jpg",
           alt: "Wedding ceremony decor",
           caption: "The Mandap",
         },
         {
-          src: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1400&auto=format&fit=crop",
+          src: "/images/the-shaadi/the-pheras.jpg",
           alt: "Wedding fire ritual",
           caption: "The Pheras",
         },
         {
-          src: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=1400&auto=format&fit=crop",
+          src: "/images/the-shaadi/the-celebration.jpg",
           alt: "Wedding celebration flowers",
           caption: "The Celebration",
         },
@@ -171,7 +176,7 @@ export const journey: Chapter[] = [
       type: "dimmer",
       images: [
         {
-          src: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1600&auto=format&fit=crop",
+          src: "/images/golden-night/photo.jpg",
           alt: "Warm candlelight in a hotel room",
         },
       ],
@@ -192,23 +197,23 @@ export const journey: Chapter[] = [
       type: "thailandPassport",
       images: [
         {
-          src: "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?q=80&w=1400&auto=format&fit=crop",
+          src: "/images/thailand-honeymoon/photo-1.jpg",
           alt: "Turquoise tropical beach in Thailand",
         },
         {
-          src: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1400&auto=format&fit=crop",
+          src: "/images/thailand-honeymoon/photo-2.jpg",
           alt: "Beachfront palm trees",
         },
         {
-          src: "https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=1400&auto=format&fit=crop",
+          src: "/images/thailand-honeymoon/photo-3.jpg",
           alt: "Longtail boats on clear water",
         },
         {
-          src: "https://images.unsplash.com/photo-1537956965359-7573183d1f57?q=80&w=1400&auto=format&fit=crop",
+          src: "/images/thailand-honeymoon/photo-4.jpg",
           alt: "Tropical island cliffs and sea",
         },
         {
-          src: "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?q=80&w=1400&auto=format&fit=crop",
+          src: "/images/thailand-honeymoon/photo-5.jpg",
           alt: "Sunset over the ocean",
         },
       ],
@@ -229,19 +234,19 @@ export const journey: Chapter[] = [
       type: "travelPostcards",
       images: [
         {
-          src: "https://images.unsplash.com/photo-1558431382-27e303142255?q=80&w=1200&auto=format&fit=crop",
+          src: "/images/travel-odyssey/kolkata.jpg",
           alt: "Kolkata heritage architecture",
           caption: "Kolkata",
           meta: "City of Joy",
         },
         {
-          src: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f3?q=80&w=1200&auto=format&fit=crop",
+          src: "/images/travel-odyssey/goa.jpg",
           alt: "Goa sunset over the sea",
           caption: "Goa",
           meta: "Sun & Sand",
         },
         {
-          src: "https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=1200&auto=format&fit=crop",
+          src: "/images/travel-odyssey/kundalpur.jpg",
           alt: "Serene temple grounds",
           caption: "Kundalpur",
           meta: "Quiet & Sacred",
@@ -264,7 +269,7 @@ export const journey: Chapter[] = [
       type: "fairyLights",
       images: [
         {
-          src: "https://images.unsplash.com/photo-1489171078254-c3365d6e359f?q=80&w=1600&auto=format&fit=crop",
+          src: "/images/room-warmth/photo.jpg",
           alt: "Cozy warm bedroom morning light",
         },
       ],
@@ -284,7 +289,7 @@ export const journey: Chapter[] = [
       type: "feature",
       images: [
         {
-          src: "https://images.unsplash.com/photo-1558636508-e0db3814bd1d?q=80&w=1600&auto=format&fit=crop",
+          src: "/images/special-memories/photo.jpg",
           alt: "Birthday cake with candlelight",
         },
       ],
@@ -304,7 +309,7 @@ export const journey: Chapter[] = [
       type: "feature",
       images: [
         {
-          src: "https://images.unsplash.com/photo-1602874801006-39634ba6a4f0?q=80&w=1600&auto=format&fit=crop",
+          src: "/images/grand-finale/photo.jpg",
           alt: "Two glowing anniversary candles on a cake",
         },
       ],
